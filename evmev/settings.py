@@ -56,16 +56,16 @@ MEDIA_ROOT = '/static/img/'
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
-ADMIN_MEDIA_PREFIX = './static/admin/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = './static/'
+STATIC_ROOT = '/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = './static/'
+STATIC_URL = '/static/'
 
 # Additional locations of static filesACCOUNT_ACTIVATION_DAYS = 7
 STATICFILES_DIRS = (
@@ -160,9 +160,9 @@ FACEBOOK_API_SECRET          = '827726705b9897381bde7b595c38687f'
 FACEBOOK_APP_ID = '136981319822209'
 FACEBOOK_APP_SECRET = '827726705b9897381bde7b595c38687f'
 FACEBOOK_PROFILE_IMAGE_PATH = '/static/'
-LOGIN_URL          = '/login-form/'
-LOGIN_REDIRECT_URL = '/logged-in/'
-LOGIN_ERROR_URL    = '/login-error/'
+#LOGIN_URL          = '/login-form/'
+#LOGIN_REDIRECT_URL = '/logged-in/'
+#LOGIN_ERROR_URL    = '/login-error/'
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete' 
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete' 
 
