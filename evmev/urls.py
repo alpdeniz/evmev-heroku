@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-	#(r'^accounts/', include('registration.urls')),
+	(r'^accounts/', include('registration.urls')),
     url(r'^$', 'evmev.ilan.views.home', name='home'),
     url(r'^hakkinda', 'evmev.ilan.views.hakkinda', name='hakkinda'),
 	url(r'^iletisim', 'evmev.ilan.views.iletisim', name='iletisim'),

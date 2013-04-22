@@ -56,16 +56,16 @@ MEDIA_ROOT = '/static/img/'
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
-ADMIN_MEDIA_PREFIX = 'static/admin/'
+ADMIN_MEDIA_PREFIX = '/app/static/admin/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/static/'
+STATIC_ROOT = '/app/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = 'static/'
+STATIC_URL = '/app/static/'
 
 # Additional locations of static filesACCOUNT_ACTIVATION_DAYS = 7
 STATICFILES_DIRS = (
@@ -109,8 +109,8 @@ ROOT_URLCONF = 'evmev.urls'
 WSGI_APPLICATION = 'evmev.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/templates/',
-	'/templates/registration/',
+    '/app/templates/',
+	'/app/templates/registration/',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

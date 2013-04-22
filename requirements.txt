@@ -1,2 +1,2 @@
 django-social-auth
-django-registration
+django-registration==0.8
