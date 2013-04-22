@@ -1,0 +1,462 @@
+﻿@{
+    ViewBag.Title = "Ilan Ekle";
+}
+<h2>
+    Create</h2>
+<input id="advertId" value="@ViewBag.AdvertId" style="display:none;" />
+<div id="vtab">
+    <ul>
+        <li id="tab1" class="selected">
+            <h4>
+                Konum</h4>
+        </li>
+        <li id="tab2">
+            <h4>
+                Ev Ozellikleri</h4>
+        </li>
+        <li id="tab3">
+            <h4>
+                Ev Arkadasi</h4>
+        </li>
+    </ul>
+    <div>
+        <h2>
+            Konum</h2>
+        <br />
+        <br />
+
+        <div class="row" style="margin: 0 22px;">
+            
+            <div style="height: 400px; float: left;">
+                <div id="map_canvas" style="width: 300px; height: 300px; float: left;"></div>                    <span class="span1">Il</span>
+                    <input id="searchTextField" type="text" size="50" />
+            </div>
+            <div class="span5">
+                <div class="row">
+
+                </div>
+                
+                <div style="margin-top: 12px;">
+                    <div class="row">
+                        
+                    </div>
+                    <div class="row">
+                        <div style="border: 1px solid #e5e5e5; width: 320px; margin-left: 18px;">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="span4">
+                
+                
+                
+            </div>
+        </div>
+        <div class="row continue">
+            <a class="btn btn-primary" id="saveLocation">2.Adim : Ev Ozellikleri</a>
+        </div>
+    </div>
+    <div>
+        <h2>
+            Ev Özellikleri</h2>
+        <br />
+        <br />
+        <table>
+            <tr>
+                <td style="width: 150px;">
+                    <span>Yatak Odasi Sayisi</span>
+                </td>
+                <td>
+                    <input id="rooms" class="span2" type="number" value="2" step="1" min="1" max="10" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="span2">Fiyat (TL)</span>
+                </td>
+                <td>
+                    <input id="price" class="span2" type="number" value="200" step="10" min="10" max="10000" />
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <h3>
+            Neler Var?</h3>
+        <br />
+        <table>
+            <tr>
+                <td style="width: 150px;">
+                    Internet
+                </td>
+                <td style="width: 50px;">
+                    <input type="checkbox" id="hasinternet" />
+                </td>
+                <td style="width: 150px;">
+                    Ev hayvani
+                </td>
+                <td>
+                    <input type="checkbox" id="haspet" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Yatak
+                </td>
+                <td>
+                    <input type="checkbox" id="hasbed" />
+                </td>
+                <td>
+                    Bulasik Makinesi
+                </td>
+                <td>
+                    <input type="checkbox" id="hasdishwasher" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Bahce
+                </td>
+                <td>
+                    <input type="checkbox" id="hasgarden" />
+                </td>
+                <td>
+                    Camasir Makinesi
+                </td>
+                <td>
+                    <input type="checkbox" id="haswashingmachine" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Balkon
+                </td>
+                <td>
+                    <input type="checkbox" id="hasbalcony" />
+                </td>
+                <td>
+                    Televizyon
+                </td>
+                <td>
+                    <input type="checkbox" id="hastv" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Teras
+                </td>
+                <td>
+                    <input type="checkbox" id="hasterrace" />
+                </td>
+            </tr>
+        </table>
+        <br />
+        <div style="padding: 0 20;">
+            <h3>
+                Resimler</h3>
+            <div class="row">
+                <div class="span3" style="height:110px;">
+                    <div id="imageUploadField" ></div>
+                    <a class="btn" id="addNewImage">Resim Ekle</a>
+                </div> 
+                <div id="imageGallery" class="span6" style="background-color:Black">
+                    <ul data-bind="foreach: imageList">
+                        <li>
+                            <img width=80 height=80 data-bind="attr: {src: '/Image/GetImage?guid='+$data}" />
+                        </li>
+                    </ul>
+                </div>
+            </div>              
+        </div>
+        <div class="row continue">
+            <a class="btn btn-primary" id="saveProperties">3.Adim : Ev Ahali</a>
+        </div>
+    </div>
+    <div>
+        <h2>
+            Aday Ozellikleri</h2>
+        <table>
+            <tr>
+                <td>
+                    Cinsiyet
+                </td>
+                <td>
+                    :
+                </td>
+                <td class="preferredSex">
+                    <input type="radio" name="cinsiyet" value="1" />Kadin<br />
+                    <input type="radio" name="cinsiyet" value="2" />Erkek<br />
+                    <input type="radio" name="cinsiyet" value="3" />Farketmez<br />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Is-Guc
+                </td>
+                <td>
+                    :
+                </td>
+                <td class="preferredOccupation">
+                    <input type="radio" name="isguc" value="1" />Ogrenci<br />
+                    <input type="radio" name="isguc" value="2" />Calisan<br />
+                    <input type="radio" name="isguc" value="3" />Fark Etmez<br />
+                </td>
+            </tr>
+        </table>
+        <div style="bottom: 10px">
+            <a class="btn btn-primary" id="savePeople">Kaydet</a>
+        </div>
+    </div>
+</div>
+<div style="clear: both;">
+</div>
+
+<!-- map -->
+<script type="text/javascript">
+    var input = document.getElementById('searchTextField');
+    var options = {
+        componentRestrictions: { country: 'tr' }
+    };
+
+    autocomplete = new google.maps.places.Autocomplete(input, options);
+    $(document).ready(function () { initializeMap2(); });
+   
+
+</script>
+
+<!-- form scripts -->
+<script type="text/javascript">
+
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+
+    getCities();
+    $("#saveLocation").click(function (e) {
+        if (marker.getPosition() === undefined) {
+            alert("Lütfen adresi haritadan işaretleyin");
+            return;
+        }
+        $("#tab2").trigger("click");
+    });
+    $("#saveProperties").click(function (e) {
+        $("#tab3").trigger("click");
+    });
+    $("#savePeople").click(function (e) {
+        submit();
+    });
+</script>
+
+<!-- Image Upload Form Template -->
+<script id='imageUploadFormTemplate' type='text/template'>
+    <form id="imageUploadForm" style="display:none" method="post" enctype="multipart/form-data" action="/Image/SaveImage/" >
+        <input type="hidden" name="advertId" value="<%= id %>" />
+        <input type="file" name="picture" />
+        <div style="width:80%;height:5px;" class="progress">
+            <div class="bar"></div >
+        </div>
+    </form>
+</script>
+<script id='imageUploadFieldTemplate' type='text/template'>
+  
+</script>
+<!--
+    Image Upload funtions
+-->
+<script type="text/javascript">
+
+    var ImageUploader = {
+        advertId: $("#advertId").val(),
+        totalImages: ko.observable(0),
+        imageList: ko.observableArray()
+    }
+
+    ko.applyBindings(ImageUploader);
+
+    $("#addNewImage").click(function () {
+
+        var tmplMarkup = $('#imageUploadFormTemplate').html();
+        var compiledTmpl = _.template(tmplMarkup, { id: ImageUploader.advertId });
+        $('#imageUploadField').html(compiledTmpl);
+
+        var newForm = $('#imageUploadForm');
+        var bar = $('#imageUploadField div.bar');
+        var percent = $('#imageUploadField div.percent');
+
+        newForm.show();
+        $("#addNewImage").hide();
+
+        $(newForm).ajaxForm({
+            beforeSend: function () {
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                console.log(percentVal);
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            complete: function (xhr) {
+                $("#imageUploadForm").hide();
+                $("#addNewImage").show();
+                loadGallery();
+            }
+        });
+
+        $(newForm).change(function () {
+            $(newForm).submit();
+        });
+    });
+
+    function loadGallery() {
+        $.get('/Image/GetAdvertImages?id=' + $("#advertId").val(), function (data) {
+            console.log(data);
+            ImageUploader.imageList.removeAll();
+            _.each(data, function (e) { ImageUploader.imageList.push(e) });
+        });
+        
+    }
+
+</script>
+<!-- submission script -->
+<script type="text/javascript">
+
+    function submit(e) {
+
+        //if (!validate()) {
+        //    return false;
+        //}
+
+        var advert = {};
+
+        advert.Id = $("#advertId").val();
+        advert.UserName = $("#username").val();
+        advert.UserId = $("#userid").val();
+        advert.UserEmail = $("#useremail").val();
+        advert.IlId = $("#il").val();
+        
+        advert.IlceId = $("#ilce").val();
+        advert.SemtId = $("#semt").val();
+
+
+        advert.Address = $("#address").val();
+        advert.Area = $("#area").val();
+        advert.Price = $("#price").val();
+        advert.Rooms = $("#rooms").val();
+        //Boolean Values
+        advert.HasGarden = $("#hasgarden").is(":checked");
+        advert.HasInternet = $("#hasinternet").is(":checked");
+        advert.HasPet = $("#haspet").is(":checked");
+        advert.HasBed = $("#hasbed").is(":checked");
+        advert.HasBalcony = $("#hasbalcony").is(":checked");
+        advert.HasTerrace = $("#hasterrace").is(":checked");
+        advert.HasWashingMachine = $("#haswashingmachine").is(":checked");
+        advert.HasDishWasher = $("#hasdishwasher").is(":checked");
+
+        if (marker.getPosition() === undefined) {
+            alert("Lütfen haritadan bir adres seçin");
+        }
+        advert.Latitude = marker.getPosition().lat();
+        advert.Longtitude = marker.getPosition().lng();
+        advert.Region = $("#searchTextField").val();
+
+        console.log($("#searchTextField").val());
+        advert.Note = $("#note").val();
+        //preferred sex and occupation
+        advert.PreferredSex = $('input[type=radio]:checked', '.preferredSex').val();
+        advert.PreferredOccupation = $('input[type=radio]:checked', '.preferredOccupation').val();
+
+        $("#submit").attr('disabled', 'disabled');
+        $("#waiting").css('visibility', 'visible');
+
+//        console.log("advert", advert);
+        $.ajax({
+            type: 'POST',
+            url: "/Advert/SaveAdvert/",
+            data: advert,
+            success: function (r) {
+                if (r) {
+                    window.location = "/Advert/CreateSuccess";
+                } else {
+                    window.location = "/Advert/CreateFail";
+                }
+            }
+        });
+
+    }
+
+    function validate() {
+        return true;
+    }
+    
+</script>
+<!-- vtab script -->
+<script type="text/javascript">
+
+    var $items = $('#vtab>ul>li');
+
+    //vtab opening
+    var openingTab = $("#tab1");
+    var openingIndex = $items.index(openingTab);
+    $('#vtab>div').hide().eq(0).show();
+
+    $items.click(function () {
+
+        //if tab1
+//        if ($(this).attr("id") === "tab1") {
+//            if (marker.getPosition() === undefined) {
+//                alert("Lütfen haritadan bir adres seçin");
+//                return;
+//            }
+//        }
+
+//        console.log($(this).attr("id"));
+
+        $items.removeClass('selected');
+        $(this).addClass('selected');
+
+        var index = $items.index($(this));
+        $('#vtab>div').hide().eq(index).show();
+
+    }).eq(1).mouseover();
+
+    $("#saveLocation").on("click", function (e) {
+        console.log("hohohohoho");
+        e.stopPropagation();
+    });
+    //$('#vtab>ul>li').first().trigger('click');
+
+    $("#il").change(function () {
+        var val = $(this).text();
+        $("#searchTextField").val(val);
+    });
+</script>
+<!--// form styling -->
+<style media="screen" type="text/css">
+    table td
+    {
+        border: 0;
+    }
+    
+    div.continue 
+    {
+        text-align:center;
+        padding:15px;
+        margin-top:15px;
+    }
+    
+    #addNewImage
+    {
+        margin:auto;
+    }
+    
+    #imageGallery ul li
+    {
+        list-style:none;
+        display:inline;
+    }
+</style>

@@ -1,0 +1,10 @@
+*.py[co]
+
+*~
+*#*
+.DS*
+.idea
+
+media
+static_collected
+static/cache

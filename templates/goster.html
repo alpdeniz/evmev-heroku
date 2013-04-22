@@ -1,0 +1,200 @@
+{% extends "home.html" %}
+
+{% block home %}
+﻿
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDo6g_iN2DkoKowHsdb76z2fVP1gpM980I&sensor=false&libraries=drawing&language=tr"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>   
+
+    <script type="text/javascript">
+    //------------------
+        //Google MAP API 
+    //------------------
+    
+        function fetchAdds() {
+
+        //Get add list
+        }
+
+        function initializeMap() {
+            
+            var center = new google.maps.LatLng({{ ilan.latt }}, {{ ilan.lng }});
+
+            //var marker;
+            var map;
+            var geocoder = new google.maps.Geocoder();
+
+            var myOptions = {
+                zoom: 13,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                center: center,
+                mapTypeControl: false
+            };
+
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            window.marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+				position: center,
+                animation: google.maps.Animation.DROP
+            });
+            
+            google.maps.event.addListener(map, 'center_changed', function () {
+                // 3 seconds after the center of the map has changed, pan back to the
+                // marker.
+                window.setTimeout(function () {
+                    //map.panTo(marker.getPosition());
+                    //marker.setPosition(map.getCenter());
+                }, 3000);
+            });
+            
+        }
+        
+    </script>
+	<style>
+.smallimg
+{
+	height:50px;
+	width:50$("#bigimg").css( "bpx;
+	float:left;
+}
+
+.smallimg:hover
+{
+
+}
+
+#bigimg
+{
+height:600px;
+widht:800px;
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position:center; 
+background-size:600px 500px;
+display:none;
+z-index:2;
+}
+#phooter
+{
+
+height:70px;
+}
+    </style>
+
+<div id="bigimg"></div>
+
+<div id="content" class="container">
+	 
+	<div class="row" style="margin: 20px 0 20px 0">
+		<div class="span5 offset1">
+			<h2>Sicak bir yuva ara</h2>
+		</div>  
+	</div>
+
+	<div class="row">
+		<div class="span4 offset1">
+			<div style="height: 300px; float: left;margin-left:30px">
+				
+    	       	<div id="map_canvas" style="width: 280px; height: 280px; float: left;"></div>                    
+    	    </div>
+		</div>
+    	<div class="span6">  
+			<div class="row well">
+			{{ ilan.useremail }} : {{ ilan.username }} : {{ user.id }}
+				<div class="span5">  
+					<div class="row">
+						<h2>{{ ilan.baslik }}</h2> {{ ilan.aciklama }}
+					</div>
+					<div class="row">
+						Fiyat (TL/ay): {{ ilan.fiyat }}
+					</div>
+					<div class="row">
+						Alan: {{ ilan.alan }}
+					</div>
+					
+					{% if ilan.balkon %}
+						<div class="row">
+						Balkon <img src="/static/check.png" width="20px" height="20px" alt="Balkon var" />
+						</div>
+					{% endif %}
+					{% if ilan.internet %}
+						<div class="row">
+						Internet <img src="/static/check.png" width="20px" height="20px" alt="Internet var" />
+						</div>
+					{% endif %}
+					{% if ilan.hayvan %}
+						<div class="row">
+						Hayvan <img src="/static/check.png" width="20px" height="20px" alt="Hayvan var" />
+						</div>
+					{% endif %}
+					{% if ilan.teras %}
+						<div class="row">
+						Teras <img src="/static/check.png" width="20px" height="20px" alt="Teras var" />
+						</div>
+					{% endif %}
+					{% if ilan.camasirmakinasi %}
+						<div class="row">
+						Camasir Makinasi <img src="/static/check.png" width="20px" height="20px" alt="Camasir makinasi var" />
+						</div>
+					{% endif %}
+
+
+				</div>
+			</div>
+			
+		</div>  
+	</div>
+	
+</div>
+<div style="clear: both;">
+
+</div>
+<div class="container">
+    <div class="navbar navbar-inverse navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <div class="row-fluid">
+		<div class="span7 offset1">
+       <div id="phooter">
+	<div class="row" style="margin: 20px 0 20px 0">
+		<div class="span4 offset1" style="display:inline">
+			<h3>Fotograflar : </h3>
+		</div>
+		<div class="span5" style="display:inline">
+			
+			<img src="/static/img/{{ ilan.imgname }}" class="thumbnail smallimg" alt="" />
+			{% if ilan.imgname1 %}
+				<img src="/static/img/{{ ilan.imgname1 }}" class="thumbnail smallimg" alt="" />
+			{% endif %}
+			{% if ilan.imgname2 %}
+				<img src="/static/img/{{ ilan.imgname2 }}" class="thumbnail smallimg" alt="" />
+			{% endif %}
+		</div>  
+	</div></div>
+		  </div>
+		</div>
+	</div>
+</div>
+<!--end div.container-->
+</div>
+<!-- map -->
+<script type="text/javascript">
+
+    $(document).ready(function () { initializeMap(); });
+
+	$(".smallimg").hover( function() {
+			$("#bigimg").css( "background-image","url('" + $(this).attr('src')+"')");
+			$("#bigimg").toggle();
+			$("#content").toggle();
+		//$("#bigimg").css( "z-index","3" );
+	});
+
+</script>
+
+
+<script type="text/javascript">
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "home.html" %}
+
+{% block home %}
+<div class="container">
+	<div class="row">
+		<div class="span10 offset1">
+			<h2> Iletisim </h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span10 offset1">
+			<p> Herhangi bir dileginiz sikayetiniz icin buyurun: </p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span10 offset1">
+			<form action="/iletisim/" method="POST" >
+				<div class="row" style="margin-top:10px">
+				
+					{% csrf_token %}
+					{{ form }}
+				
+				</div>
+				<div class="row" style="margin-top:20px">
+					<input type="submit" value="Gonder"/>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

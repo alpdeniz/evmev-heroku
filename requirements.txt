@@ -1,0 +1,6 @@
+-r requirements-base.txt
+
+gunicorn==0.17.2
+gevent==0.13.8
+pylibmc==1.2.3
+django-herokuify==1.0.pre3

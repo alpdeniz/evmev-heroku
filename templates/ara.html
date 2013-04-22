@@ -1,0 +1,185 @@
+{% extends "home.html" %}
+
+{% block home %}
+﻿
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDo6g_iN2DkoKowHsdb76z2fVP1gpM980I&sensor=false&libraries=drawing&language=tr"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>   
+
+    <script type="text/javascript">
+
+	function getAdverts(n,s,e,w)
+	{
+		
+		$.ajax({
+			type:"POST",
+			url: "/ilan/getir/",
+			data: {
+					'n':n,
+					's':s,
+					'e':e,
+					'w':w,
+					csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+			success: function (r) {
+						
+						$("#results").html('');
+						$.each(r, function(index, e) {
+							var items = [];
+							html = "<a href='/ilan/goster/" + e['pk'] + "' class=''><img class='thumbnail' src='/static/img/";
+							html += e['fields']['imgname'] + "' width='60px' height='60px' alt=''><h3>" + e['fields']['baslik'];
+							html += "</h3><h4>" + e['fields']['fiyat'] + " TL/" + e['fields']['cesit'] + "</h4><p>";
+							html += e['fields']['aciklama'] + "</p></a>";
+												
+            						
+							$('<div/>', {
+    						'class': 'row well',
+    						html: html
+  							}).appendTo('#results');
+        					});
+					}});
+
+
+	}
+  
+    //------------------
+        //Google MAP API
+    //------------------
+    
+        function fetchAdds() {
+
+        //Get add list
+        }
+
+        function initializeMap() {
+            
+            var stockholm = new google.maps.LatLng(59.32522, 18.07002);
+
+            //var marker;
+            var map;
+            var geocoder = new google.maps.Geocoder();
+
+            var myOptions = {
+                zoom: 13,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                center: stockholm,
+                mapTypeControl: false
+            };
+
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            window.marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP
+            });
+
+            
+            var rect = null;
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                //infowindow.close();
+                var place = autocomplete.getPlace();
+                center = place.geometry.location;
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(15);  // Why 17? Because it looks good.
+                }
+
+				sw = new google.maps.LatLng(center.lat()-0.005,center.lng()-0.005);
+				ne = new google.maps.LatLng(center.lat()+0.005,center.lng()+0.005);
+				getAdverts(ne.lat(),sw.lat(),ne.lng(),sw.lng())
+				bounds = new google.maps.LatLngBounds(sw,ne)
+                rect = new google.maps.Rectangle({
+                    map: map,
+                    bounds: bounds,   // metres
+                    editable: true,
+                    fillColor: '#AA0000'
+                });
+               
+                marker.setPosition(place.geometry.location);
+
+                google.maps.event.addListener(rect, 'bounds_changed', function () {
+
+				sw = rect.getBounds().getSouthWest();
+				ne = rect.getBounds().getNorthEast(); 
+				getAdverts(ne.lat(),sw.lat(),ne.lng(),sw.lng())
+                });
+            });
+
+            
+            google.maps.event.addListener(map, 'center_changed', function () {
+                // 3 seconds after the center of the map has changed, pan back to the
+                // marker.
+				
+
+                window.setTimeout(function () {
+                    //map.panTo(marker.getPosition());
+                    //marker.setPosition(map.getCenter());
+                }, 3000);
+            });
+
+			google.maps.event.addListener(marker, 'dragend', function(event) {
+ 				sw = new google.maps.LatLng(marker.getPosition().lat()-0.005,marker.getPosition().lng()-0.005);
+				ne = new google.maps.LatLng(marker.getPosition().lat()+0.005,marker.getPosition().lng()+0.005); 
+				rect.setBounds(new google.maps.LatLngBounds(sw,ne))
+				
+			});
+            
+        }
+        
+    </script>
+<style>
+      .thumbnail {
+        float:left;
+      }
+    </style>
+
+
+<div class="container">
+	<div class="row" style="margin: 20px 0 20px 0">
+		<div class="span5 offset1">
+			<h2>Sicak bir yuva ara</h2>
+		</div>  
+	</div>
+	<div class="row" style="margin: 20px 0 20px 0">
+		<div class="span5 offset1">
+			<input id="searchTextField" type="text" size="50" />
+		</div>  
+	</div>
+	<div class="row">
+		<div class="span5 offset1">
+			<div style="height: 400px; float: left;">
+    	       	<div id="map_canvas" style="width: 400px; height: 400px; float: left;"></div>                    
+    	    </div>
+		</div>
+    	<div id="results" class="span5">  
+			<div class="row well">
+				<p>Yandaki alana ev aradiginiz yeri giriniz. Haritada cikan alani degistirip surukleyebilir, dilediginiz alani tarayabilirsiniz.</p>
+			</div>
+		
+		</div>  
+	</div>
+</div>
+<div style="clear: both;">
+</div>
+
+<!-- map -->
+<script type="text/javascript">
+	var input = document.getElementById('searchTextField');
+    var options = {
+        componentRestrictions: { country: 'tr' }
+    };
+    autocomplete = new google.maps.places.Autocomplete(input, options);
+    $(document).ready(function () { initializeMap(); });
+
+</script>
+
+
+<script type="text/javascript">
+
+
+</script>
+
+
+{% endblock %}

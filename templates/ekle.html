@@ -1,0 +1,359 @@
+{% extends "home.html" %}
+
+{% block home %}
+
+<style>
+div.continue 
+    {
+        text-align:center;
+        padding:15px;
+        margin-top:15px;
+    }
+﻿</style>
+<h2>
+    Ilani hazirla</h2>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDo6g_iN2DkoKowHsdb76z2fVP1gpM980I&sensor=false&libraries=drawing&language=tr"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>   
+
+      
+    <script type="text/javascript">
+        function fetchAdds() {
+
+        //Get add list
+        }
+
+    //------------------
+        //Google MAP API 
+    //------------------ 
+
+        function initializeMap() {
+            
+            var stockholm = new google.maps.LatLng(59.32522, 18.07002);
+
+            //var marker;
+            var map;
+            var geocoder = new google.maps.Geocoder();
+
+            var myOptions = {
+                zoom: 13,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                center: stockholm,
+                mapTypeControl: false
+            };
+
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            window.marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP
+            });
+
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                //infowindow.close();
+                var place = autocomplete.getPlace();
+                center = place.geometry.location;
+				$("#lat").val(place.geometry.location.lat());
+				$("#lon").val(place.geometry.location.lng()); 
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(15);  // Why 17? Because it looks good.
+                }
+                marker.setPosition(place.geometry.location);
+            });
+
+            
+            google.maps.event.addListener(map, 'center_changed', function () {
+                // 3 seconds after the center of the map has changed, pan back to the
+                // marker.
+                window.setTimeout(function () {
+                    //map.panTo(marker.getPosition());
+                    //marker.setPosition(map.getCenter());
+                }, 3000);
+            });
+
+			google.maps.event.addListener(marker, 'dragend', function(event) {
+ 				$("#lat").val(event.latLng.lat());
+				$("#lon").val(event.latLng.lng());  
+			});
+            
+        }   
+    </script>
+<input id="advertId" value="1" style="display:none;" />
+<div id="tabs">
+<ul>
+<li><a href="#tabs-1">Yer</a></li>
+<li><a href="#tabs-2">Ozellikler</a></li>
+<li><a href="#tabs-3">Ahali</a></li>
+</ul>
+<form id="kayit" action="/ilan/kaydet/" method="post">
+{% csrf_token %}
+<div id="tabs-1">
+   <div class="row" style="margin: 20px 40px 20px;">
+	<div class="span5">
+		<span class="span1">Mekan</span>
+                <input id="searchTextField" type="text" size="50" />
+	</div>
+   </div>
+   <div class="row" style="margin: 0 22px;">     
+        <div class="span5">
+				<div style="height: 400px; float: left;">
+                	<div id="map_canvas" style="width: 400px; height: 400px; float: left;"></div>                    
+            	</div>
+        </div>
+		<div class="span5">
+			<input id="lat" name="lat" style="display:none" />
+			<input id="lon" name="lon" style="display:none" />
+			<input id="imgname0" name="imgname0" style="display:none" />
+			<input id="imgname1" name="imgname1" style="display:none" />
+			<input id="imgname2" name="imgname2" style="display:none" />
+			<input id="imgname3" name="imgname3" style="display:none" />
+                <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem.</p>
+		</div>
+	</div>
+    <div class="row continue">
+            <a class="btn btn-primary" id="saveLocation">2.Adim : Ev Ozellikleri</a>
+    </div>
+</div>
+<div id="tabs-2">
+<div class="row" style="margin: 10px 22px;">
+	<div class="span5">
+ 		<span class="span2">Fiyat (TL)</span>
+ 		<input id="price" name="price" class="span2" type="number" value="200" step="10" min="10" max="10000" />
+	</div>
+<p>Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+</div>
+<div class="row" style="margin: 10px 22px;">
+	<div class="span5">
+ 		<span class="span2">Oda Sayisi</span>
+ 		<input id="rooms" name="rooms" class="span2" type="number" value="1" step="1" min="1" max="10" />
+	</div>
+
+<p>Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+</div>
+<div class="row" style="margin: 10px 22px;">
+	<div class="span5">
+ 		<span class="span2">Alan</span>
+ 		<input id="area" name="area" class="span2" type="number" value="20" step="1" min="1" max="200" />
+	</div>
+
+<p>Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+</div>
+
+<div class="row" style="margin: 10px 22px;">
+	<div class="span10">
+ 		<label class="checkbox">
+      		<input name="bahce" type="checkbox"> Bahce
+    	</label>
+<label class="checkbox">
+      		<input name="internet" type="checkbox"> Internet
+    	</label>
+<label class="checkbox">
+      		<input name="hayvan" type="checkbox"> Hayvan
+    	</label>
+<label class="checkbox">
+      		<input name="balkon" type="checkbox"> Balkon
+    	</label>
+		</label>
+		<label class="checkbox">
+      		<input name="teras" type="checkbox"> Teras
+    	</label>
+		</label>
+		<label class="checkbox">
+      		<input name="camasirmakinasi" type="checkbox"> Camasir Makinasi
+    	</label>
+		</label>
+		<label class="checkbox">
+      		<input name="bulasikmakinasi" type="checkbox"> Bulasik Makinasi
+    	</label>
+	</div>
+</div>
+<div class="row continue">
+            <a class="btn btn-primary" id="saveProperties">3.Adim : Ahali</a>
+</div>
+</div>
+<div id="tabs-3">
+	<div class="row" style="margin: 20px 40px;">
+		<div class="span4 offset1">
+			<div id="file-uploader">      
+   				 <noscript>         
+      			  	<p>Please enable JavaScript to use file uploader.</p>
+  			  	</noscript>        
+			</div>
+
+		</div>
+		<div class="span5">		
+		<input name="aciklama" type="text"/>
+		</div>
+	</div>
+	<div class="row continue">
+            <input type="submit" class="btn btn-primary" id="submit" value="Ilani Yayinla" />
+    </div>
+</div>
+</form>
+	
+        
+</div>
+
+<div style="clear: both;">
+</div>
+
+<!-- map -->
+<script type="text/javascript">
+    var input = document.getElementById('searchTextField');
+    var options = {
+        componentRestrictions: { country: 'tr' }
+    };
+
+    autocomplete = new google.maps.places.Autocomplete(input, options);
+    $(document).ready(function () { initializeMap(); });
+   
+
+//UPLOAD
+	var uploader = new qq.FileUploader( {
+    action: "{% url 'upload' %}",
+    element: $('#file-uploader')[0],
+    multiple: true,
+    onComplete: function( id, fileName, responseJSON ) {
+      if( responseJSON.success )
+{
+		for (var i=0;i<4;i++)
+		{
+		var imgselector = "#imgname";
+		var val = $(imgselector+i).val()
+		if ( val == "")
+			{
+			$(imgselector+i).val( responseJSON.success );
+			break;
+			}
+		}
+}
+      //  alert( "success!" ) ;
+      else
+{}
+       // alert( "upload failed!" ) ;
+    },
+    onAllComplete: function( uploads ) {
+      // uploads is an array of maps
+      // the maps look like this: { file: FileObject, response: JSONServerResponse }
+      //alert( "All complete!" ) ;
+    },
+    params: {
+      'csrf_token': '{{ csrf_token }}',
+      'csrf_name': 'csrfmiddlewaretoken',
+      'csrf_xname': 'X-CSRFToken',
+    },
+  } ) ;
+
+
+</script>
+
+<!-- TABS -->
+<script type="text/javascript">
+   var tabs = $( "#tabs" ).tabs();
+   $("#saveLocation").focus();
+   $("#saveLocation").click(function () {
+	$( "#tabs" ).tabs( "option", "active", 1 );
+	$("#saveProperties").focus();
+	});
+   $("#saveProperties").click(function () {
+	$( "#tabs" ).tabs( "option", "active", 2 );
+	$("#submit").focus();
+	});
+
+	$('#kayit').submit(function() {
+		
+		if ($( "#tabs" ).tabs( "option", "active") != 2) return false;
+		if (marker.getPosition() == null) {
+			alert("Ilaninizin yerini secmeyi unuttunuz.."); 
+			$( "#tabs" ).tabs( "option", "active", 0 );
+			return false;
+		} 
+		return
+	//#submit
+	//#direct-to-congrats
+	});
+</script>
+
+<script type="text/javascript">
+
+
+</script>
+
+
+<!-- submission script -->
+<script type="text/javascript">
+
+    function submit(e) {
+
+        //if (!validate()) {
+        //    return false;
+        //}
+
+        var advert = {};
+
+        advert.Id = $("#advertId").val();
+        advert.UserName = $("#username").val();
+        advert.UserId = $("#userid").val();
+        advert.UserEmail = $("#useremail").val();
+        advert.IlId = $("#il").val();
+        
+        advert.IlceId = $("#ilce").val();
+        advert.SemtId = $("#semt").val();
+
+
+        advert.Address = $("#address").val();
+        advert.Area = $("#area").val();
+        advert.Price = $("#price").val();
+        advert.Rooms = $("#rooms").val();
+        //Boolean Values
+        advert.HasGarden = $("#hasgarden").is(":checked");
+        advert.HasInternet = $("#hasinternet").is(":checked");
+        advert.HasPet = $("#haspet").is(":checked");
+        advert.HasBed = $("#hasbed").is(":checked");
+        advert.HasBalcony = $("#hasbalcony").is(":checked");
+        advert.HasTerrace = $("#hasterrace").is(":checked");
+        advert.HasWashingMachine = $("#haswashingmachine").is(":checked");
+        advert.HasDishWasher = $("#hasdishwasher").is(":checked");
+
+        if (marker.getPosition() === undefined) {
+            alert("Lütfen haritadan bir adres seçin");
+        }
+        advert.Latitude = marker.getPosition().lat();
+        advert.Longtitude = marker.getPosition().lng();
+        advert.Region = $("#searchTextField").val();
+
+        console.log($("#searchTextField").val());
+        advert.Note = $("#note").val();
+        //preferred sex and occupation
+        advert.PreferredSex = $('input[type=radio]:checked', '.preferredSex').val();
+        advert.PreferredOccupation = $('input[type=radio]:checked', '.preferredOccupation').val();
+
+        $("#submit").attr('disabled', 'disabled');
+        $("#waiting").css('visibility', 'visible');
+
+//        console.log("advert", advert);
+        $.ajax({
+            type: 'POST',
+            url: "/Advert/SaveAdvert/",
+            data: advert,
+            success: function (r) {
+                if (r) {
+                    window.location = "/Advert/CreateSuccess";
+                } else {
+                    window.location = "/Advert/CreateFail";
+                }
+            }
+        });
+
+    }
+
+    function validate() {
+        return true;
+    }
+    
+</script>
+
+
+{% endblock %}
