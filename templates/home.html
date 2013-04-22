@@ -65,17 +65,17 @@ $( "#tabs" ).tabs();
           </div>
 		  </div><!--FORMLARI ENCRYPT ET -->
 		  <div class="span6">
-		 {% if user.is_authenticated %}
 			<div class="nav-collapse collapse">
+		  {% if user.is_authenticated %}
+			
             <ul class="nav">             
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">WELCOME {{ user.username }} <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Merhaba {{ user.username }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="#">Profil</a></li>
+                  <li><a href="#">Mesajlar</a></li>
                   <li class="divider"></li>
-                  <li><a href="/accounts/logout/">Log Out</a></li>
+                  <li><a href="/accounts/logout/">Cikis</a></li>
                 </ul>
               </li>
             </ul>
@@ -124,10 +124,7 @@ $( "#tabs" ).tabs();
                 href="/ilan/ara/">Ev Ariyorum</a>
         </div>
         <div>
-            <p style="text-align:center">Zaten uyeyseniz buradan giris yapin : 
-                <br />
-                <a href="/accounts/login/">Kullanici Girisi</a>
-            </p>
+           
         </div>
 		</div> 
     </div>    

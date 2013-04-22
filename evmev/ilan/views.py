@@ -19,6 +19,7 @@ def home(request):
 	context = RequestContext(request, c)
 	return render_to_response("home.html", context)
 
+@login_required('')
 def ekle(request):
 	c = {}
 	c.update(csrf(request))
