@@ -13,6 +13,7 @@ import uuid
 import datetime
 from evmev.ilan.models import ilan, mesaj
 from evmev.ilan.forms import ContactForm
+from django.contrib.auth.models import User
 
 def home(request):	
 	c = {}
@@ -62,12 +63,18 @@ def iletisim(request):
 		return HttpResponseRedirect('/iletisim/') # Redirect after POST
 	form = ContactForm() # An unbound form
 	return render(request, 'iletisim.html', {'form': form })
-
+	
+@login_required('')
+def profile(request,user_id = ""):
+	c = {}
+	c.update(csrf(request))
+	context = RequestContext(request, c)
+	return render_to_response("profile.html", context)
 @login_required('')
 def mesajlar(request,kutu = ""):
 	if request.method == 'POST':
 		message = request.POST['mesaj']
-		recipients=[ilan.objects.filter(pk = request.POST['ilanid'])[0].useremail]
+		recipients=[ilan.objects.filter(pk = request.POST['ilanid'])[0].user.email]
 		sender = request.user.email
 		subject = 'Evmev - ilaniniz icin mesaj var'
 		try:
@@ -76,28 +83,26 @@ def mesajlar(request,kutu = ""):
 			pass
 		msg = mesaj()
 		msg.ilanid = request.POST['ilanid']
-		msg.user = request.user
 		msg.msg = message
-		msg.msgTo = request.POST['msgTo']
-		msg.msgFrom = request.user.id
+		msg.msgTo = User.objects.get(pk=request.POST['msgTo'])
+		msg.msgFrom = request.user
 		msg.msgSubject = request.POST['ilanid']
 		msg.save()
 			
-	msgList = mesaj.objects.filter(Q(msgFrom=request.user.id) | Q(msgTo=request.user.id))
+	msgList = mesaj.objects.filter(Q(msgFrom=request.user) | Q(msgTo=request.user))
 	#msgList = mesaj.objects.all()
-	a = mesaj.objects.filter(Q(msgFrom=request.user.id) | Q(msgTo=request.user.id))	
+	a = mesaj.objects.filter(Q(msgFrom=request.user) | Q(msgTo=request.user))	
 	#a = mesaj.objects.all()
 	b = []
 	couples = []
 	#froms.append(request.user.id)
-	for msg in msgList:
-		
-		if msg.msgFrom != request.user.id and [msg.ilanid,msg.msgFrom] not in couples:			
+	for msg in msgList:	
+		if msg.msgFrom.id != request.user.id and [msg.ilanid,msg.msgFrom.id] not in couples:			
 			b.append(a.filter(ilanid = msg.ilanid).filter(Q(msgTo=msg.msgFrom) | Q(msgFrom=msg.msgFrom)))
-			couples.append([msg.ilanid,msg.msgFrom])
-		if msg.msgTo != request.user.id and [msg.ilanid,msg.msgTo] not in couples:			
+			couples.append([msg.ilanid,msg.msgFrom.id])
+		if msg.msgTo.id != request.user.id and [msg.ilanid,msg.msgTo.id] not in couples:			
 			b.append(a.filter(ilanid = msg.ilanid).filter(Q(msgTo=msg.msgTo) | Q(msgFrom=msg.msgTo)))
-			couples.append([msg.ilanid,msg.msgTo])	
+			couples.append([msg.ilanid,msg.msgTo.id])	
 	c = {}
 	c.update(csrf(request))
 	c["msgList"] = b
@@ -108,9 +113,7 @@ def mesajlar(request,kutu = ""):
 @login_required('')
 def kaydet(request):
 	ad = ilan()
-	ad.userid = request.user.id
-	ad.username = request.user.username
-	ad.useremail = request.user.email
+	ad.user = request.user
 	ad.bolge = ''
 	ad.aciklama = request.POST['aciklama']
 	ad.fiyat = request.POST['price']

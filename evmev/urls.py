@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	url(r'^ilan/upload', 'evmev.ilan.views.upload', name='upload'),
 	url(r'^ilan/mesaj/(?P<kutu>.*)$', 'evmev.ilan.views.mesajlar', name='mesaj'),
 	url(r'^mesajlar', 'evmev.ilan.views.mesajlar', name='mesajlar'),
+	url(r'^profile/(?P<user_id>.*)$', 'evmev.ilan.views.profile', name='profile'),
 	
 	url(r'^ilan/ara', 'evmev.ilan.views.ara', name='ara'),
 	url(r'^ilan/getir', 'evmev.ilan.views.getir', name='getir'),

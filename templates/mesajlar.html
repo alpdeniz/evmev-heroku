@@ -15,7 +15,7 @@ display:none;
 	background-color:#ccc;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	padding:10px;
+	padding:20px;
 }
 </style>
 <h2>Mesajlar</h2>
@@ -26,14 +26,14 @@ display:none;
 	{% for msgs in msgList %}
 		
 		<div class="row" style="margin-top:30px;">
-		
+		<h3>{% with msgs|first as msg %}{% ifequal msg.msgFrom.id user.id %}{{msg.msgTo.username}} - {{msg.ilanid}}{% else %}{{msg.msgFrom.username}} - {{msg.ilanid}}{% endifequal %}{% endwith %}</h3>
 		{% for msg in msgs %}
-			<div class="row {% ifequal msg.msgFrom user.id %}yours{% endifequal %}">
+			<div class="row {% ifequal msg.msgFrom.id user.id %}yours{% endifequal %}">
 				<div class="span2"><a href="/ilan/goster/{{msg.ilanid}}">
-					{{ msg.user.username }} - {{ msg.ilanid }} - {{ msg.msgFrom }} - {{ msg.msgTo }}
+					{{ msg.user.username }}
 					</a>
 				</div>
-				<div id="{{msg.ilanid}}{{msg.msgFrom}}" class="span6 offset1 msg">
+				<div id="{{msg.ilanid}}{{msg.msgFrom.id}}" class="span6 offset1 msg">
 					{{ msg.msg }}
 					
 				</div>
@@ -43,16 +43,16 @@ display:none;
 		
 		{% with msgs|first as msg %}
 			<!-- BUG VAR - response divi kararsiz (FROM-TO) -->
-			<div id="response{{msg.ilanid}}{{msg.msgFrom}}" class="row response">
+			<div id="response{{msg.ilanid}}{{msg.msgFrom.id}}" class="row response">
 				<div class="span4 offset2">
 					<form action="/ilan/mesaj/" method="post">{% csrf_token %}
 						<div class="row">
 							<input type="hidden" name="ilanid" value="{{ msg.ilanid }}"/>
-							<input type="hidden" name="msgTo" value="{% ifequal msg.msgFrom user.id %}{{msg.msgTo}}{% else %}{{msg.msgFrom}}{% endifequal %}"/>
+							<input type="hidden" name="msgTo" value="{% ifequal msg.msgFrom.id user.id %}{{msg.msgTo.id}}{% else %}{{msg.msgFrom.id}}{% endifequal %}"/>
 							<textarea name="mesaj" class="field span4" rows="10"></textarea>
 						</div>
 						<div class="row">
-							<input id="{{msg.ilanid}}{{msg.msgFrom}}" class="iptal" type="button" class="btn" style="float:right;" value="Iptal"/>
+							<input id="{{msg.ilanid}}{{msg.msgFrom.id}}" class="iptal" type="button" class="btn" style="float:right;" value="Iptal"/>
 							<input type="submit" class="btn btn-success" style="float:right;" value="Mesaji Gonder"/>
 						</div>
 					</form>

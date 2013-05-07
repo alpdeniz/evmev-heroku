@@ -29,9 +29,8 @@ class ilan(models.Model):
 	latt = models.FloatField()
 	lng = models.FloatField()
 #User - Email
-	userid = models.IntegerField()
-	username = models.CharField(max_length=30)
-	useremail = models.EmailField()
+	user = models.ForeignKey(User)
+
 	aciklama = models.CharField(max_length=200, default='...')
 #Boolean
 	bahce = models.BooleanField(default=False)
@@ -50,10 +49,9 @@ class ilan(models.Model):
 		
 class mesaj(models.Model):
 	ilanid = models.IntegerField()
-	user = models.ForeignKey(User)
 	msg = models.CharField(max_length=200, default='...')
-	msgFrom = models.IntegerField()
-	msgTo = models.IntegerField()
+	msgFrom = models.ForeignKey(User,related_name='mesaj_From')
+	msgTo = models.ForeignKey(User,related_name='mesaj_To')
 	msgSubject = models.CharField(max_length=50)
 	
 

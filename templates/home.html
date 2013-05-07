@@ -73,7 +73,7 @@ $( "#tabs" ).tabs();
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Merhaba {{ user.username }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/profile/">Profil</a></li>
+                  <li><a href="/profile/{{user.id}}">Profil</a></li>
                   <li><a href="/mesajlar/">Mesajlar</a></li>
                   <li class="divider"></li>
                   <li><a href="/accounts/logout/">Cikis</a></li>
