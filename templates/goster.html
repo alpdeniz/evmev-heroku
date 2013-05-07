@@ -51,6 +51,12 @@
         
     </script>
 	<style>
+body
+{
+height:100%;
+width:100%;
+}
+
 .smallimg
 {
 	height:50px;
@@ -70,7 +76,7 @@ widht:800px;
 background-repeat:no-repeat;
 background-attachment:fixed;
 background-position:center; 
-background-size:600px 500px;
+background-size:40% 50%;
 display:none;
 z-index:2;
 }
@@ -79,9 +85,88 @@ z-index:2;
 
 height:70px;
 }
+#msgboxbg
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	display:none;
+	background-color:white;
+	zoom: 1;
+	filter: alpha(opacity=70);
+	opacity: 0.7;
+	z-index:4;
+}
+
+#msgbox
+{
+	float:none;
+	margin:0 auto;
+	z-index:5;
+	filter: alpha(opacity=90);
+	opacity: 0.9;
+	background-color:#77C;
+	display:none;
+}
+
+#msgboxerror
+{
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	background-color:#C88;
+	filter: alpha(opacity=80);
+	padding:10px;
+	text-align:center;
+	opacity: 0.8;
+	display:none;
+}
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+    color: #ccc;
+    font-size:12px;
+}
     </style>
 
 <div id="bigimg"></div>
+
+<div id="msgboxerror" class="row">
+Kendinize mesaj gonderiyordunuz, engelledik :)
+</div>
+<div id="msgboxbg">
+</div>
+		<div id="msgbox" class="well" style="">
+			<form action="/ilan/mesaj/" method="post">{% csrf_token %}
+			<div class="row">
+		 		<div class="span5">
+		 		<h3>Mesaj yaz</h3>
+		 		</div>
+		 		<div class="span1">
+		 			<div id="msgboxClose" style="float:right;"><img src="/static/close.png" width="20px" height="20px" alt="kapat"/> </div>
+		 		</div>
+		    </div>
+			<div class="row">
+				<div class="span2">
+				<br/>
+					Iletmek istediginiz mesajinizi yazin
+				</div>
+		 		<div class="span4">
+		 		<input type="hidden" name="ilanid" value="{{ ilan.id }}"/>
+		 		<input type="hidden" id="msgTo" name="msgTo" value="{{ ilan.userid }}"/>
+		 		<textarea name="mesaj" class="field span4" rows="10"></textarea>
+		 		</div>
+		 	</div>
+		 	<div class="row">
+				<div class="span6">
+					<input type="submit" class="btn btn-success" style="float:right;" value="Mesaji Gonder"></div>
+				</div>
+			</div>
+			</form>
+		</div>
+	
+
 
 <div id="content" class="container">
 	 
@@ -100,7 +185,7 @@ height:70px;
 		</div>
     	<div class="span6">  
 			<div class="row well">
-			{{ ilan.useremail }} : {{ ilan.username }} : {{ user.id }}
+			{{ ilan.useremail }} : {{ ilan.username }} : {{ ilan.userid }}
 				<div class="span5">  
 					<div class="row">
 						<h2>{{ ilan.baslik }}</h2> {{ ilan.aciklama }}
@@ -137,16 +222,20 @@ height:70px;
 						Camasir Makinasi <img src="/static/check.png" width="20px" height="20px" alt="Camasir makinasi var" />
 						</div>
 					{% endif %}
-
+						<div class="row">
+						<div id="submit" class="btn btn-large btn-success {% if user.id != None %}mesaj{% endif %}" style="float:right;">{% if user.id = None %} <a href="{% url 'registration_register' %}">Mesaj Gondermek icin Uye olunuz </a>{% else %} Mesaj Gonder {% endif %}</div>
+						</div>
 
 				</div>
+				
+				
 			</div>
 			
 		</div>  
 	</div>
 	
 </div>
-<div style="clear: both;">
+<div style="clear: both;height:50px;">
 
 </div>
 <div class="container">
@@ -179,7 +268,14 @@ height:70px;
 <!-- map -->
 <script type="text/javascript">
 
-    $(document).ready(function () { initializeMap(); });
+    $(document).ready(function () { 
+    initializeMap(); 
+    $('#msgbox').css({
+   		position:'absolute',
+   		left: ($(window).width() - $('#msgbox').outerWidth())/2,
+   		top: ($(window).height() - $('#msgbox').outerHeight())/2
+ 		 });
+    });
 
 	$(".smallimg").hover( function() {
 			$("#bigimg").css( "background-image","url('" + $(this).attr('src')+"')");
@@ -187,6 +283,21 @@ height:70px;
 			$("#content").toggle();
 		//$("#bigimg").css( "z-index","3" );
 	});
+	
+	$(".mesaj").click( function() {
+		if ($("#msgTo").val() == "{{user.id}}")
+		{
+			$('#msgboxerror').fadeIn('slow');
+			return false
+		}
+		$('#msgboxbg').fadeIn('slow');
+		$('#msgbox').fadeIn('slow');
+	});
+	$("#msgboxClose").click( function() {
+		$('#msgboxbg').fadeOut('slow');
+		$('#msgbox').fadeOut('slow');
+	});
+	
 
 </script>
 

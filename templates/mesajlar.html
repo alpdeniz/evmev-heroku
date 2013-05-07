@@ -1,0 +1,81 @@
+{% extends "home.html" %}
+
+{% block home %}
+<style>
+.msg
+{
+	
+}
+.response
+{
+display:none;
+}
+.yours
+{
+	background-color:#ccc;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding:10px;
+}
+</style>
+<h2>Mesajlar</h2>
+
+<div class="container" style="">
+	<div class="row">
+		<div class="span9">
+	{% for msgs in msgList %}
+		
+		<div class="row" style="margin-top:30px;">
+		
+		{% for msg in msgs %}
+			<div class="row {% ifequal msg.msgFrom user.id %}yours{% endifequal %}">
+				<div class="span2"><a href="/ilan/goster/{{msg.ilanid}}">
+					{{ msg.user.username }} - {{ msg.ilanid }} - {{ msg.msgFrom }} - {{ msg.msgTo }}
+					</a>
+				</div>
+				<div id="{{msg.ilanid}}{{msg.msgFrom}}" class="span6 offset1 msg">
+					{{ msg.msg }}
+					
+				</div>
+			</div>
+		{% endfor %}
+		</div>	
+		
+		{% with msgs|first as msg %}
+			<!-- BUG VAR - response divi kararsiz (FROM-TO) -->
+			<div id="response{{msg.ilanid}}{{msg.msgFrom}}" class="row response">
+				<div class="span4 offset2">
+					<form action="/ilan/mesaj/" method="post">{% csrf_token %}
+						<div class="row">
+							<input type="hidden" name="ilanid" value="{{ msg.ilanid }}"/>
+							<input type="hidden" name="msgTo" value="{% ifequal msg.msgFrom user.id %}{{msg.msgTo}}{% else %}{{msg.msgFrom}}{% endifequal %}"/>
+							<textarea name="mesaj" class="field span4" rows="10"></textarea>
+						</div>
+						<div class="row">
+							<input id="{{msg.ilanid}}{{msg.msgFrom}}" class="iptal" type="button" class="btn" style="float:right;" value="Iptal"/>
+							<input type="submit" class="btn btn-success" style="float:right;" value="Mesaji Gonder"/>
+						</div>
+					</form>
+				</div>
+			</div>
+		{% endwith %}
+	{% empty %}
+			<div class="row well"> Suanda posta kutunuzda birsey yok...</div>
+	{% endfor %}
+		</div>
+		<div class="span3" style="">
+			YAN MENU - GEREKIRSE
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(".msg").click( function() {
+		$("#response" + this.id).fadeIn('slow');
+	});
+	$(".iptal").click( function() {
+		$("#response" + this.id).fadeOut('slow');
+	});
+	
+
+</script>
+{% endblock %}

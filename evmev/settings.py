@@ -11,11 +11,11 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'django',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'django',
-        'PASSWORD': 'delizaman',
+        'USER': 'evmev',
+        'PASSWORD': 'some_pass',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
@@ -50,29 +50,30 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/app/static/img/'
+MEDIA_ROOT = '/static/img/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
-ADMIN_MEDIA_PREFIX = '/app/static/admin/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/app/static/'
+STATIC_ROOT = 'static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
-# Additional locations of static filesACCOUNT_ACTIVATION_DAYS = 7
+# Additional locations of static files
 STATICFILES_DIRS = (
-    '/app/static/img/'
-	'/app/static/admin/'
-	'/app/static/uploader/'
-	'/app/static/uni_form/'
+    'static/img/',
+    'static/bootstrap/',
+	'static/admin/',
+	'static/uploader/',
+	'static/uni_form/'
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -112,8 +113,8 @@ ROOT_URLCONF = 'evmev.urls'
 WSGI_APPLICATION = 'evmev.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/app/templates/',
-	'/app/templates/registration/',
+    'templates/',
+	'templates/registration/',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -150,12 +151,17 @@ INSTALLED_APPS = (
 	'social_auth',
 )
 
+#AUTH_PROFILE_MODULE='ilan.UserProfile'
+
 ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'alpdeniz@gmail.com'
-EMAIL_HOST_PASSWORD = '2the2ndlife'
-EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'evmevinfo@gmail.com'
+EMAIL_HOST_PASSWORD = 'evmev2013'
+DEFAULT_FROM_EMAIL = 'evmevinfo@gmail.com'
+SERVER_EMAIL = 'evmevinfo@gmail.com'
+
 LOGIN_REDIRECT_URL = '/'
 
 FACEBOOK_APP_ID              = '136981319822209'

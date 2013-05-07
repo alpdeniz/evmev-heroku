@@ -1,4 +1,18 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+# User Extension
+from django import template
+
+register = template.Library()
+
+@register.simple_tag
+def get_username(user_id):
+	print user_id
+	try:
+		return User.objects.get(id=user_id).username
+	except User.DoesNotExist:
+		return 'Unknown'
 
 # Create your models here.
 class ilan(models.Model):
@@ -15,6 +29,7 @@ class ilan(models.Model):
 	latt = models.FloatField()
 	lng = models.FloatField()
 #User - Email
+	userid = models.IntegerField()
 	username = models.CharField(max_length=30)
 	useremail = models.EmailField()
 	aciklama = models.CharField(max_length=200, default='...')
@@ -32,5 +47,14 @@ class ilan(models.Model):
 
 	def __unicode__(self):
 		return self.baslik
+		
+class mesaj(models.Model):
+	ilanid = models.IntegerField()
+	user = models.ForeignKey(User)
+	msg = models.CharField(max_length=200, default='...')
+	msgFrom = models.IntegerField()
+	msgTo = models.IntegerField()
+	msgSubject = models.CharField(max_length=50)
+	
 
 

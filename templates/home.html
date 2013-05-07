@@ -58,39 +58,44 @@ $( "#tabs" ).tabs();
           <a class="brand" href="/">EvMev</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Anasayfa</a></li>
+              <li class="active"><a href="/ilan/ekle/">Ilan Ekle</a></li>
+              <li><a href="/ilan/ara/">Ilan Ara</a></li>
               <li><a href="/hakkinda/">Hakkinda</a></li>
               <li><a href="/iletisim/">Iletisim</a></li>
             </ul>
           </div>
 		  </div><!--FORMLARI ENCRYPT ET -->
 		  <div class="span6">
-			<div class="nav-collapse collapse">
+			<div class="nav-collapse collapse" style="float:right;display:inline;">
 		  {% if user.is_authenticated %}
 			
             <ul class="nav">             
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Merhaba {{ user.username }} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Profil</a></li>
-                  <li><a href="#">Mesajlar</a></li>
+                  <li><a href="/profile/">Profil</a></li>
+                  <li><a href="/mesajlar/">Mesajlar</a></li>
                   <li class="divider"></li>
                   <li><a href="/accounts/logout/">Cikis</a></li>
                 </ul>
               </li>
             </ul>
 		  {% else %}
-			<div style="float:right;">
-			<a href="{% url 'socialauth_begin' 'facebook' %}"><img src="/static/facebook_logo.png" width="30px" height="30px"/></a>
-			<div style="width:20px;float:right;"> or </div>
-			</div>
-		  <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="navbar-form pull-right"> 
-			  {% csrf_token %}
-              <input id="id_username" name="username" class="span4" type="text" placeholder="Email">
-              <input id="id_password" name="password" class="span4" type="password" placeholder="Password">
-			  <input type="hidden" name="next" value="" />
-              <button type="submit" class="btn">Sign in</button>
-            </form>
+			<div class="row" >
+				<div class="span2" >
+				<a href="{% url 'socialauth_begin' 'facebook' %}" style="margin-top:10px;"><img src="/static/facebook_logo.png" width="30px" height="30px"/></a>
+				</div>
+				<div class="span1" style="width:20px;margin-top:10px;"> or </div>
+				<div class="span9" >
+		  			<form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="navbar-form pull-right"> 
+					  {% csrf_token %}
+            		  <input id="id_username" name="username" class="span4" type="text" placeholder="Kullanici adi">
+            		  <input id="id_password" name="password" class="span4" type="password" placeholder="Sifre">
+					  <input type="hidden" name="next" value="" />
+            		  <button type="submit" class="btn">Giris yap</button>
+           			 </form>
+           		</div>
+            </div>
 		  {% endif %}
 
           </div><!--/.nav-collapse -->	

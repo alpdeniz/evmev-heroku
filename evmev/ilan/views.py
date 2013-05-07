@@ -8,9 +8,10 @@ from django.utils import simplejson
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.core import serializers
+from django.db.models import Q
 import uuid
 import datetime
-from evmev.ilan.models import ilan
+from evmev.ilan.models import ilan, mesaj
 from evmev.ilan.forms import ContactForm
 
 def home(request):	
@@ -49,12 +50,60 @@ def iletisim(request):
 			subject = form.cleaned_data['subject']
 			message = form.cleaned_data['message']
 			sender = form.cleaned_data['sender']
-			recipients = [request.user.email]    		
-			send_mail(subject, message, sender, recipients)
+			recipients = ['alpdeniz@gmail.com',]   
+			try:		
+				send_mail(subject, message, sender, recipients)
+			except:
+				pass
+			c = {}
+			c.update(csrf(request))
+			context = RequestContext(request, c)
+			return render_to_response("gonderildi.html",context)
 		return HttpResponseRedirect('/iletisim/') # Redirect after POST
 	form = ContactForm() # An unbound form
 	return render(request, 'iletisim.html', {'form': form })
 
+@login_required('')
+def mesajlar(request,kutu = ""):
+	if request.method == 'POST':
+		message = request.POST['mesaj']
+		recipients=[ilan.objects.filter(pk = request.POST['ilanid'])[0].useremail]
+		sender = request.user.email
+		subject = 'Evmev - ilaniniz icin mesaj var'
+		try:
+			send_mail(subject, message, sender, recipients)
+		except:
+			pass
+		msg = mesaj()
+		msg.ilanid = request.POST['ilanid']
+		msg.user = request.user
+		msg.msg = message
+		msg.msgTo = request.POST['msgTo']
+		msg.msgFrom = request.user.id
+		msg.msgSubject = request.POST['ilanid']
+		msg.save()
+			
+	msgList = mesaj.objects.filter(Q(msgFrom=request.user.id) | Q(msgTo=request.user.id))
+	#msgList = mesaj.objects.all()
+	a = mesaj.objects.filter(Q(msgFrom=request.user.id) | Q(msgTo=request.user.id))	
+	#a = mesaj.objects.all()
+	b = []
+	couples = []
+	#froms.append(request.user.id)
+	for msg in msgList:
+		
+		if msg.msgFrom != request.user.id and [msg.ilanid,msg.msgFrom] not in couples:			
+			b.append(a.filter(ilanid = msg.ilanid).filter(Q(msgTo=msg.msgFrom) | Q(msgFrom=msg.msgFrom)))
+			couples.append([msg.ilanid,msg.msgFrom])
+		if msg.msgTo != request.user.id and [msg.ilanid,msg.msgTo] not in couples:			
+			b.append(a.filter(ilanid = msg.ilanid).filter(Q(msgTo=msg.msgTo) | Q(msgFrom=msg.msgTo)))
+			couples.append([msg.ilanid,msg.msgTo])	
+	c = {}
+	c.update(csrf(request))
+	c["msgList"] = b
+	context = RequestContext(request, c)
+	return render_to_response("mesajlar.html",context)
+	
 
 @login_required('')
 def kaydet(request):
