@@ -41,6 +41,20 @@
 
 	}
   
+  	function set_user_coordinates(lat,lng)
+	{
+		
+		$.ajax({
+			type:"POST",
+			url: "/ilan/set_user_coordinates/",
+			data: {
+					'lat':lat,
+					'lng':lng,
+					csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+			success: function(r){}
+			});
+	}
     //------------------
         //Google MAP API
     //------------------
@@ -52,7 +66,7 @@
 
         function initializeMap() {
             
-            var stockholm = new google.maps.LatLng(59.32522, 18.07002);
+            var stockholm = new google.maps.LatLng({{user.get_profile.latt}}, {{user.get_profile.lng}});
 
             //var marker;
             var map;
@@ -83,7 +97,7 @@
                     map.fitBounds(place.geometry.viewport);
                 } else {
                     map.setCenter(place.geometry.location);
-                    map.setZoom(15);  // Why 17? Because it looks good.
+                    map.setZoom(17);  // Why 17? Because it looks good.
                 }
 
 				sw = new google.maps.LatLng(center.lat()-0.005,center.lng()-0.005);
@@ -111,12 +125,12 @@
             google.maps.event.addListener(map, 'center_changed', function () {
                 // 3 seconds after the center of the map has changed, pan back to the
                 // marker.
-				
-
+				//marker.setPosition(map.getCenter());
                 window.setTimeout(function () {
                     //map.panTo(marker.getPosition());
                     //marker.setPosition(map.getCenter());
                 }, 3000);
+                set_user_coordinates(marker.getPosition().lat(),marker.getPosition().lng())
             });
 
 			google.maps.event.addListener(marker, 'dragend', function(event) {
@@ -137,23 +151,23 @@
 
 
 <div class="container">
-	<div class="row" style="margin: 20px 0 20px 0">
-		<div class="span5 offset1">
+	<div class="row" style="margin:0">
+		<div class="span5">
 			<h2>Sicak bir yuva ara</h2>
 		</div>  
 	</div>
 	<div class="row" style="margin: 20px 0 20px 0">
-		<div class="span5 offset1">
+		<div class="span5">
 			<input id="searchTextField" type="text" size="50" />
 		</div>  
 	</div>
 	<div class="row">
-		<div class="span5 offset1">
-			<div style="height: 400px; float: left;">
-    	       	<div id="map_canvas" style="width: 400px; height: 400px; float: left;"></div>                    
+		<div class="span5">
+			<div style="height: 400px; float: left;margin-left:20px;">
+    	       	<div id="map_canvas" style="width: 450px; height: 350px; float: left;"></div>                    
     	    </div>
 		</div>
-    	<div id="results" class="span5">  
+    	<div id="results" class="span6 offset1">  
 			<div class="row well">
 				<p>Yandaki alana ev aradiginiz yeri giriniz. Haritada cikan alani degistirip surukleyebilir, dilediginiz alani tarayabilirsiniz.</p>
 			</div>

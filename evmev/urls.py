@@ -19,6 +19,8 @@ urlpatterns = patterns('',
 	
 	url(r'^ilan/ara', 'evmev.ilan.views.ara', name='ara'),
 	url(r'^ilan/getir', 'evmev.ilan.views.getir', name='getir'),
+	url(r'^ilan/set_user_coordinates', 'evmev.ilan.views.set_user_coordinates', name='set_user_coordinates'),
+	url(r'^ilan/set_user_image', 'evmev.ilan.views.set_user_image', name='set_user_image'),
 	url(r'^ilan/goster/(?P<ilan_id>.*)$', 'evmev.ilan.views.goster', name='goster'),
 
 	url(r'', include('social_auth.urls')),

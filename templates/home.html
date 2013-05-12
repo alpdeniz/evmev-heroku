@@ -11,7 +11,7 @@
     <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-top: 80px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
     <link href="/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
@@ -48,7 +48,7 @@ $( "#tabs" ).tabs();
 <div class="container">
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="row-fluid">
+        <div class="row-fluid" style="margin:10px;">
 		<div class="span5 offset1">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
@@ -58,21 +58,22 @@ $( "#tabs" ).tabs();
           <a class="brand" href="/">EvMev</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/ilan/ekle/">Ilan Ekle</a></li>
+              <li><a href="/ilan/ekle/">Ilan Ekle</a></li>
               <li><a href="/ilan/ara/">Ilan Ara</a></li>
               <li><a href="/hakkinda/">Hakkinda</a></li>
               <li><a href="/iletisim/">Iletisim</a></li>
             </ul>
           </div>
-		  </div><!--FORMLARI ENCRYPT ET -->
-		  <div class="span6">
+		</div><!--FORMLARI ENCRYPT ET -->
+		<div class="span6">
 			<div class="nav-collapse collapse" style="float:right;display:inline;">
 		  {% if user.is_authenticated %}
 			
             <ul class="nav">             
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Merhaba {{ user.username }} <b class="caret"></b></a>
-                <ul class="dropdown-menu">
+              	<img src="{{user.get_profile.image}}" alt="profil resmi" width="45px" height="45px" style="float:left;margin-top:5px;"/>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="float:left;margin-left:10px;margin-right:10px;">{{ user.username }} <b class="caret"></b></a>
+                <ul class="dropdown-menu" style="float:right;">
                   <li><a href="/profile/{{user.id}}">Profil</a></li>
                   <li><a href="/mesajlar/">Mesajlar</a></li>
                   <li class="divider"></li>
@@ -83,7 +84,7 @@ $( "#tabs" ).tabs();
 		  {% else %}
 			<div class="row" >
 				<div class="span2" >
-				<a href="{% url 'socialauth_begin' 'facebook' %}" style="margin-top:10px;"><img src="/static/facebook_logo.png" width="30px" height="30px"/></a>
+				<a href="{% url 'socialauth_begin' 'facebook' %}" style="margin-top:10px;"><img src="/static/facebook_logo.png" width="40px" height="40px"/></a>
 				</div>
 				<div class="span1" style="width:20px;margin-top:10px;"> or </div>
 				<div class="span9" >

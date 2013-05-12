@@ -11,11 +11,28 @@ from django.core import serializers
 from django.db.models import Q
 import uuid
 import datetime
-from evmev.ilan.models import ilan, mesaj
+from evmev.ilan.models import ilan, mesaj, UserProfile
 from evmev.ilan.forms import ContactForm
 from django.contrib.auth.models import User
 
-def home(request):	
+
+def home(request):
+	UserProfile.objects.get_or_create(user=request.user)
+	if request.user:# and request.user.get_profile().latt == 0:
+		import pygeoip
+		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+		if x_forwarded_for:
+			ip = x_forwarded_for.split(',')[-1].strip()
+		else:
+			ip = request.META.get('REMOTE_ADDR')
+	####--localhost---##
+		if ip == '127.0.0.1':
+			ip = '145.97.237.229'
+	####-------------------
+		gi = pygeoip.GeoIP('/home/pusula/evmev-heroku/static/geoip/GeoLiteCity.dat')
+		user_location = gi.record_by_addr(ip)
+		print ip,user_location
+		request.user.get_profile().set_coordinates(user_location['latitude'],user_location['longitude']) 	
 	c = {}
 	c.update(csrf(request))
 	context = RequestContext(request, c)
@@ -44,6 +61,24 @@ def hakkinda(request):
 	context = RequestContext(request, c)
 	return render_to_response("hakkinda.html",context)
 
+def set_geoip(request):
+	gi = pygeoip.GeoIP('/home/pusula/evmev-heroku/static/geoip/GeoLiteCity.dat')
+	user_location = gi.record_by_addr('64.233.161.99')
+	request.user.get_profile().set_coordinates(user_location.lat_lon[0],user_location.lat_lon[1])
+def set_user_image(request):
+	print 'fonk'
+	if request.method == 'POST':
+		user = request.user.get_profile()
+		print user.image
+		user.image = request.POST['image']
+		print user.image
+		user.save()
+		print user.image
+	return HttpResponse("OK")
+def set_user_coordinates(request):
+	if request.method == 'POST':
+		request.user.get_profile().set_coordinates(request.POST['lat'],request.POST['lng'])
+	return HttpResponse("OK")
 def iletisim(request):
 	if request.method == 'POST':
 		form = ContactForm(request.POST) 
@@ -66,8 +101,11 @@ def iletisim(request):
 	
 @login_required('')
 def profile(request,user_id = ""):
+	print request.user.get_profile()
 	c = {}
 	c.update(csrf(request))
+	c['user_id'] = user_id
+	c['ilans'] = ilan.objects.filter(user=request.user)
 	context = RequestContext(request, c)
 	return render_to_response("profile.html", context)
 @login_required('')

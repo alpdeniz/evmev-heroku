@@ -1,18 +1,33 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
 
 # User Extension
-from django import template
+from django.db.models.signals import post_save
 
-register = template.Library()
+class UserProfile(models.Model):  
+	user = models.OneToOneField(User) 
+	image = models.CharField(max_length=100,default='/static/defaultProfile.png')
+	latt = models.FloatField(default=0)
+	lng = models.FloatField(default=0)
+	bilgi = models.CharField(max_length=255,default='Kendi hakkimda birsey yazmadim.')
+    #other fields here
 
-@register.simple_tag
-def get_username(user_id):
-	print user_id
-	try:
-		return User.objects.get(id=user_id).username
-	except User.DoesNotExist:
-		return 'Unknown'
+	def __str__(self):
+		return "%s's profile" % self.user
+	def set_coordinates(self,lat,lng):
+		self.latt=lat
+		self.lng=lng
+		self.save()
+
+def create_user_profile(sender, instance, created, **kwargs):  
+    if created:
+		profile, created = UserProfile.objects.get_or_create(user=instance)
+		profile.first_name = instance.first_name
+		profile.save()
+
+post_save.connect(create_user_profile, sender=User) 
+
 
 # Create your models here.
 class ilan(models.Model):

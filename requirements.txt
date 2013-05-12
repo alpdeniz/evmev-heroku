@@ -1,3 +1,4 @@
 #django-social-auth
 #hg+https://bitbucket.org/ubernostrum/django-registration/@tip
 #django-registration==0.8
+pygeoip

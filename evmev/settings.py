@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Europe/Istanbul'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -56,7 +56,7 @@ MEDIA_ROOT = '/static/img/'
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+ADMIN_MEDIA_PREFIX = '/app/static/admin/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
@@ -130,6 +130,20 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+
+SOCIAL_AUTH_PIPELINE = (
+	'social_auth.backends.pipeline.social.social_auth_user',
+#	'social_auth.backends.pipeline.associate.associate_by_email',
+	'social_auth.backends.pipeline.user.get_username',
+	'social_auth.backends.pipeline.user.create_user',
+	'social_auth.backends.pipeline.social.associate_user',
+	'social_auth.backends.pipeline.social.load_extra_data',
+	'social_auth.backends.pipeline.user.update_user_details',
+	'evmev.ilan.pipeline.handle_new_user'
+       )
+  
+
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.contrib.auth.context_processors.auth',
     'social_auth.context_processors.social_auth_backends',
@@ -151,7 +165,7 @@ INSTALLED_APPS = (
 	'social_auth',
 )
 
-#AUTH_PROFILE_MODULE='ilan.UserProfile'
+AUTH_PROFILE_MODULE='ilan.UserProfile'
 
 ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_USE_TLS = True
@@ -164,11 +178,11 @@ SERVER_EMAIL = 'evmevinfo@gmail.com'
 
 LOGIN_REDIRECT_URL = '/'
 
-FACEBOOK_APP_ID              = '136981319822209'
-FACEBOOK_API_SECRET          = '827726705b9897381bde7b595c38687f'
-FACEBOOK_APP_ID = '136981319822209'
-FACEBOOK_APP_SECRET = '827726705b9897381bde7b595c38687f'
-FACEBOOK_PROFILE_IMAGE_PATH = '/static/'
+#FACEBOOK_APP_ID              = '136981319822209'
+#FACEBOOK_API_SECRET          = '827726705b9897381bde7b595c38687f'
+FACEBOOK_APP_ID = '258759024269102'
+FACEBOOK_API_SECRET = '08e74ed2b74a9e91de40922977f25a8f'
+
 #LOGIN_URL          = '/login-form/'
 #LOGIN_REDIRECT_URL = '/logged-in/'
 #LOGIN_ERROR_URL    = '/login-error/'

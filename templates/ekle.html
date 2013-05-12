@@ -22,13 +22,27 @@ div.continue
         //Get add list
         }
 
+  	function set_user_coordinates(lat,lng)
+	{
+		
+		$.ajax({
+			type:"POST",
+			url: "/ilan/set_user_coordinates/",
+			data: {
+					'lat':lat,
+					'lng':lng,
+					csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+			success: function(r){}
+			});
+	}
     //------------------
         //Google MAP API 
     //------------------ 
 
         function initializeMap() {
             
-            var stockholm = new google.maps.LatLng(59.32522, 18.07002);
+            var stockholm = new google.maps.LatLng({{user.get_profile.latt}}, {{user.get_profile.lng}});
 
             //var marker;
             var map;

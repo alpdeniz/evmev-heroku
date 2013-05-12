@@ -3,5 +3,90 @@
 {% block home %}
 <h2>Profile</h2>
 
-<h3>{{user.username}}</h3>
+<div class="container">
+	<div class="row">
+		<div class="span3">
+			<div class="row">
+				<div class="span4">
+					
+					<img id="image" src="{{user.get_profile.image}}" alt="Profil Resmi" width="140px" height="140px" />
+					
+					<div id="file-uploader" style="text-align:center;width:125px;"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span3">
+					<h3>{{user.username}}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="span7">
+			<div class="row">
+				<div class="span6">
+					<h3>Profil notu:</h3>
+					<p>
+						{{user.get_profile.bilgi}}
+					</p>
+				</div>
+			</div>
+			<div class="row" style="padding-top:30px;">
+				<div class="span7">
+				{% for ilan in ilans %}
+				<a href="/ilan/goster/{{ilan.id}}">
+					<div class=" row well">
+						<div class="span1">
+							<img src="/static/img/{{ilan.imgname}}" width="50px" height="50px" style="float:left;"/>
+						</div>
+						<div class="span5" style="float:left;"> 
+							{{ilan.baslik}} : {{ilan.aciklama}}
+						</div>
+					</div>
+				</a>
+				{% empty %}
+					<div class="row well">Hic ilaniniz yok...</div>
+				{% endfor %}
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+		$(".qq-upload-button").css("width","140px");
+
+		});
+
+//UPLOAD
+	var uploader = new qq.FileUploader( {
+    action: "{% url 'upload' %}",
+    element: $('#file-uploader')[0],
+    multiple: true,
+    onComplete: function( id, fileName, responseJSON ) {
+      $("#image").attr('src','/static/img/'+ responseJSON.success);
+      $.ajax({
+			type:"POST",
+			url: "/ilan/set_user_image/",
+			data: {
+					'image':'/static/img/'+ responseJSON.success,
+					csrfmiddlewaretoken: '{{ csrf_token }}'
+					},
+			success: function(r){}
+			});
+       // alert( "upload failed!" ) ;
+    },
+    onAllComplete: function( uploads ) {
+      // uploads is an array of maps
+      // the maps look like this: { file: FileObject, response: JSONServerResponse }
+      //alert( "All complete!" ) ;
+    },
+    params: {
+      'csrf_token': '{{ csrf_token }}',
+      'csrf_name': 'csrfmiddlewaretoken',
+      'csrf_xname': 'X-CSRFToken',
+    },
+  } ) ;
+  </script>
 {% endblock %}
