@@ -18,8 +18,7 @@ from django.contrib.auth.models import User
 
 def home(request):
 	#UserProfile.objects.get_or_create(user=request.user)
-	print request.user
-	if request.user != "AnonymousUser":# and request.user.get_profile().latt == 0:
+	if request.user.is_authenticated():# and request.user.get_profile().latt == 0:
 		import pygeoip
 		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 		if x_forwarded_for:
