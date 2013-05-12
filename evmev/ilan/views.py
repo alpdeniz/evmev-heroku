@@ -29,7 +29,7 @@ def home(request):
 		if ip == '127.0.0.1':
 			ip = '145.97.237.229'
 	####-------------------
-		gi = pygeoip.GeoIP('/home/pusula/evmev-heroku/static/geoip/GeoLiteCity.dat')
+		gi = pygeoip.GeoIP('/app/static/geoip/GeoLiteCity.dat')
 		user_location = gi.record_by_addr(ip)
 		print ip,user_location
 		request.user.get_profile().set_coordinates(user_location['latitude'],user_location['longitude']) 	
@@ -62,7 +62,7 @@ def hakkinda(request):
 	return render_to_response("hakkinda.html",context)
 
 def set_geoip(request):
-	gi = pygeoip.GeoIP('/home/pusula/evmev-heroku/static/geoip/GeoLiteCity.dat')
+	gi = pygeoip.GeoIP('/app/static/geoip/GeoLiteCity.dat')
 	user_location = gi.record_by_addr('64.233.161.99')
 	request.user.get_profile().set_coordinates(user_location.lat_lon[0],user_location.lat_lon[1])
 def set_user_image(request):
