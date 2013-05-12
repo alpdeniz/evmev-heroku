@@ -130,6 +130,7 @@
                     //map.panTo(marker.getPosition());
                     //marker.setPosition(map.getCenter());
                 }, 3000);
+                if (marker.getPosition())
                 set_user_coordinates(marker.getPosition().lat(),marker.getPosition().lng())
             });
 
