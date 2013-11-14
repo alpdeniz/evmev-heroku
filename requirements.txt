@@ -2,3 +2,5 @@
 #hg+https://bitbucket.org/ubernostrum/django-registration/@tip
 #django-registration==0.8
 pygeoip
+boto==2.2.1
+django-storages==1.1.4
